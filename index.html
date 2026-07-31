@@ -668,7 +668,7 @@
             During winter daily from <span class="span">7:00 pm</span> to <span class="span">9:00 pm</span>
           </p>
 
-         <a href="./assets/menu.pdf#toolbar=0&navpanes=0&zoom=100" target="_blank" class="btn btn-primary">
+        <a href="javascript:void(0)" onclick="openMenuModal()" class="btn btn-primary">
   <span class="text text-1">View All Menu</span>
   <span class="text text-2" aria-hidden="true">View All Menu</span>
 </a>
@@ -1170,6 +1170,26 @@
   -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- Menu Popup Modal -->
+<div id="menuModal" class="menu-modal">
+  <div class="menu-modal-content">
+    <button onclick="closeMenuModal()" class="close-menu-btn" title="Close Menu">&times;</button>
+    <iframe src="./assets/menu.pdf#toolbar=0&navpanes=0&zoom=100" width="100%" height="100%" style="border: none;"></iframe>
+  </div>
+</div>
+
+<script>
+  function openMenuModal() {
+    document.getElementById('menuModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Stops background from scrolling
+  }
+
+  function closeMenuModal() {
+    document.getElementById('menuModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Enables background scrolling again
+  }
+</script>
 
 </body>
 
