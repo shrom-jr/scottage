@@ -2219,15 +2219,17 @@ textarea.input-field {
 }
 
 #menu-flipbook .page {
-  background-color: #fcf8f2;
+  background-color: #0d1a0e; /* matches menu background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
 #menu-flipbook .page img {
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  display: block;
+  object-fit: contain; /* Ensures the entire image fits without cropping */
 }
 
 .flipbook-controls {
