@@ -1213,20 +1213,20 @@
     const modal = document.getElementById('menuModal');
     if (modal) modal.style.display = 'flex';
 
-    // Wait 1 frame so browser renders container dimensions before PageFlip calculates bounds
     requestAnimationFrame(() => {
       if (!pageFlipInstance) {
         const container = document.getElementById('menu-flipbook');
         if (!container) return;
 
+        // 424x600 perfectly matches the 1414x2000 image aspect ratio (0.707)
         pageFlipInstance = new St.PageFlip(container, {
-          width: 400,
+          width: 424,
           height: 600,
           size: 'stretch',
-          minWidth: 300,
-          maxWidth: 800,
-          minHeight: 450,
-          maxHeight: 900,
+          minWidth: 280,
+          maxWidth: 900,
+          minHeight: 400,
+          maxHeight: 1200,
           maxShadowOpacity: 0.5,
           showCover: false,
           mobileScrollSupport: false
@@ -1235,7 +1235,7 @@
         const pages = container.querySelectorAll('.page');
         pageFlipInstance.loadFromHTML(pages);
 
-        // Update page counter text on page flip
+        // Counter display update
         pageFlipInstance.on('flip', (e) => {
           const counter = document.getElementById('page-counter');
           if (counter) {
@@ -1243,15 +1243,34 @@
           }
         });
 
-        // Bind Next / Prev buttons directly
+        // Loop functionality for Next / Prev
         const nextBtn = document.getElementById('next-page-btn');
         const prevBtn = document.getElementById('prev-page-btn');
 
         if (nextBtn) {
-          nextBtn.onclick = () => pageFlipInstance.flipNext();
+          nextBtn.onclick = () => {
+            const currentPage = pageFlipInstance.getCurrentPageIndex();
+            const totalPages = pageFlipInstance.getPageCount();
+            // Loop back to page 1 (index 0) if at or near the end
+            if (currentPage >= totalPages - 2) {
+              pageFlipInstance.flip(0);
+            } else {
+              pageFlipInstance.flipNext();
+            }
+          };
         }
+
         if (prevBtn) {
-          prevBtn.onclick = () => pageFlipInstance.flipPrev();
+          prevBtn.onclick = () => {
+            const currentPage = pageFlipInstance.getCurrentPageIndex();
+            const totalPages = pageFlipInstance.getPageCount();
+            // Loop to the last page if at page 1
+            if (currentPage === 0) {
+              pageFlipInstance.flip(totalPages - 1);
+            } else {
+              pageFlipInstance.flipPrev();
+            }
+          };
         }
       }
     });

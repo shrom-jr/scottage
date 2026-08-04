@@ -2219,7 +2219,7 @@ textarea.input-field {
 }
 
 #menu-flipbook .page {
-  background-color: #0d1a0e; /* matches menu background */
+  background-color: #0d1a0e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2229,7 +2229,8 @@ textarea.input-field {
 #menu-flipbook .page img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensures the entire image fits without cropping */
+  object-fit: fill; /* Forces the 1414x2000 image to stretch across the full page without cropping top/bottom */
+  display: block;
 }
 
 .flipbook-controls {
