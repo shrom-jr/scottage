@@ -1207,83 +1207,61 @@
   </div>
 
   <script>
-    let pageFlipInstance = null;
+  let pageFlipInstance = null;
 
-        function initFlipbook() {
-      if (pageFlipInstance) return;
-      const flipbookEl = document.getElementById('menu-flipbook');
-      if (!flipbookEl) return;
+  function openMenuModal() {
+    const modal = document.getElementById('menuModal');
+    if (modal) modal.style.display = 'flex';
 
-      // Determine dimensions based on window width
-      const isMobile = window.innerWidth <= 768;
-      const width = isMobile ? Math.min(window.innerWidth * 0.9, 400) : 500;
-      const height = isMobile ? Math.min(window.innerHeight * 0.65, 560) : 700;
-
-      pageFlipInstance = new StPageFlip.PageFlip(flipbookEl, {
-        width: width,
-        height: height,
-        size: isMobile ? "fixed" : "stretch",
-        minWidth: 280,
-        maxWidth: 1000,
-        minHeight: 400,
-        maxHeight: 1200,
-        drawShadow: true,
-        spinningCorner: true,
-        usePortrait: isMobile,
-        mobileScrollSupport: false,
-        maxShadowOpacity: 0.5,
-        showCover: true
-      });
-
-      const pages = flipbookEl.querySelectorAll('.page');
-      const imageUrls = Array.from(pages).map(p => p.querySelector('img').src);
-
-      requestAnimationFrame(() => {
-        pageFlipInstance.loadFromImages(imageUrls);
-      });
-
-      const pageCounter = document.getElementById('page-counter');
-    
-      pageFlipInstance.on('flip', (e) => {
-        const current = e.data + 1;
-        const total = pageFlipInstance.getPageCount();
-        pageCounter.textContent = `Page ${current} of ${total}`;
-      });
-
-      document.getElementById('prev-page-btn').addEventListener('click', () => {
-        pageFlipInstance.flipPrev();
-      });
-
-      document.getElementById('next-page-btn').addEventListener('click', () => {
-        pageFlipInstance.flipNext();
-      });
-    }
-
-    function openMenuModal() {
-      const modal = document.getElementById('menuModal');
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    
+    // Wait 1 frame so browser renders container dimensions before PageFlip calculates bounds
+    requestAnimationFrame(() => {
       if (!pageFlipInstance) {
-        initFlipbook();
-      } else {
-        pageFlipInstance.update();
-      }
-    }
+        const container = document.getElementById('menu-flipbook');
+        if (!container) return;
 
-    function closeMenuModal() {
-      document.getElementById('menuModal').style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }
+        pageFlipInstance = new St.PageFlip(container, {
+          width: 450,
+          height: 600,
+          size: 'stretch',
+          minWidth: 300,
+          maxWidth: 1000,
+          minHeight: 400,
+          maxHeight: 1200,
+          maxShadowOpacity: 0.5,
+          showCover: false,
+          mobileScrollSupport: false
+        });
 
-    // Close modal on outside click
-    window.addEventListener('click', (e) => {
-      const modal = document.getElementById('menuModal');
-      if (e.target === modal) {
-        closeMenuModal();
+        const pages = container.querySelectorAll('.page');
+        pageFlipInstance.loadFromHTML(pages);
+
+        // Update page counter text on page flip
+        pageFlipInstance.on('flip', (e) => {
+          const counter = document.getElementById('page-counter');
+          if (counter) {
+            counter.innerText = `Page ${e.data + 1} of ${pages.length}`;
+          }
+        });
+
+        // Bind Next / Prev buttons directly
+        const nextBtn = document.getElementById('next-page-btn');
+        const prevBtn = document.getElementById('prev-page-btn');
+
+        if (nextBtn) {
+          nextBtn.onclick = () => pageFlipInstance.flipNext();
+        }
+        if (prevBtn) {
+          prevBtn.onclick = () => pageFlipInstance.flipPrev();
+        }
       }
     });
-  </script>
+  }
+
+  function closeMenuModal() {
+    const modal = document.getElementById('menuModal');
+    if (modal) modal.style.display = 'none';
+  }
+</script>
 
 </body>
 
