@@ -25,10 +25,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
 
-  <!-- 
+    <!-- 
     - custom css link
   -->
   <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - PageFlip JS library CDN
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
   <!-- 
     - preload images
@@ -1172,24 +1177,113 @@
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
   <!-- Menu Popup Modal -->
-<div id="menuModal" class="menu-modal">
-  <div class="menu-modal-content">
-    <button onclick="closeMenuModal()" class="close-menu-btn" title="Close Menu">&times;</button>
-    <iframe src="./assets/menu.pdf#toolbar=0&navpanes=0&zoom=100" width="100%" height="100%" style="border: none;"></iframe>
+  <div id="menuModal" class="menu-modal">
+    <div class="menu-modal-content">
+      <button onclick="closeMenuModal()" class="close-menu-btn" title="Close Menu">&times;</button>
+      <div class="flipbook-wrapper">
+        <div id="menu-flipbook">
+          <div class="page"><img src="./assets/images/menu-1.jpg" alt="Menu Page 1" /></div>
+          <div class="page"><img src="./assets/images/menu-2.jpg" alt="Menu Page 2" /></div>
+          <div class="page"><img src="./assets/images/menu-3.jpg" alt="Menu Page 3" /></div>
+          <div class="page"><img src="./assets/images/menu-4.jpg" alt="Menu Page 4" /></div>
+          <div class="page"><img src="./assets/images/menu-5.jpg" alt="Menu Page 5" /></div>
+          <div class="page"><img src="./assets/images/menu-6.jpg" alt="Menu Page 6" /></div>
+          <div class="page"><img src="./assets/images/menu-7.jpg" alt="Menu Page 7" /></div>
+          <div class="page"><img src="./assets/images/menu-8.jpg" alt="Menu Page 8" /></div>
+          <div class="page"><img src="./assets/images/menu-9.jpg" alt="Menu Page 9" /></div>
+          <div class="page"><img src="./assets/images/menu-10.jpg" alt="Menu Page 10" /></div>
+          <div class="page"><img src="./assets/images/menu-11.jpg" alt="Menu Page 11" /></div>
+          <div class="page"><img src="./assets/images/menu-12.jpg" alt="Menu Page 12" /></div>
+          <div class="page"><img src="./assets/images/menu-13.jpg" alt="Menu Page 13" /></div>
+          <div class="page"><img src="./assets/images/menu-14.jpg" alt="Menu Page 14" /></div>
+        </div>
+      </div>
+      <div class="flipbook-controls">
+        <button id="prev-page-btn" class="flip-nav-btn"><ion-icon name="chevron-back-outline"></ion-icon> Previous</button>
+        <span id="page-counter" class="page-counter">Page 1 of 14</span>
+        <button id="next-page-btn" class="flip-nav-btn">Next <ion-icon name="chevron-forward-outline"></ion-icon></button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  function openMenuModal() {
-    document.getElementById('menuModal').style.display = 'block';
-    document.body.style.overflow = 'hidden'; // Stops background from scrolling
-  }
+  <script>
+    let pageFlipInstance = null;
 
-  function closeMenuModal() {
-    document.getElementById('menuModal').style.display = 'none';
-    document.body.style.overflow = 'auto'; // Enables background scrolling again
-  }
-</script>
+        function initFlipbook() {
+      if (pageFlipInstance) return;
+      const flipbookEl = document.getElementById('menu-flipbook');
+      if (!flipbookEl) return;
+
+      // Determine dimensions based on window width
+      const isMobile = window.innerWidth <= 768;
+      const width = isMobile ? Math.min(window.innerWidth * 0.9, 400) : 500;
+      const height = isMobile ? Math.min(window.innerHeight * 0.65, 560) : 700;
+
+      pageFlipInstance = new StPageFlip.PageFlip(flipbookEl, {
+        width: width,
+        height: height,
+        size: isMobile ? "fixed" : "stretch",
+        minWidth: 280,
+        maxWidth: 1000,
+        minHeight: 400,
+        maxHeight: 1200,
+        drawShadow: true,
+        spinningCorner: true,
+        usePortrait: isMobile,
+        mobileScrollSupport: false,
+        maxShadowOpacity: 0.5,
+        showCover: true
+      });
+
+      const pages = flipbookEl.querySelectorAll('.page');
+      const imageUrls = Array.from(pages).map(p => p.querySelector('img').src);
+
+      requestAnimationFrame(() => {
+        pageFlipInstance.loadFromImages(imageUrls);
+      });
+
+      const pageCounter = document.getElementById('page-counter');
+    
+      pageFlipInstance.on('flip', (e) => {
+        const current = e.data + 1;
+        const total = pageFlipInstance.getPageCount();
+        pageCounter.textContent = `Page ${current} of ${total}`;
+      });
+
+      document.getElementById('prev-page-btn').addEventListener('click', () => {
+        pageFlipInstance.flipPrev();
+      });
+
+      document.getElementById('next-page-btn').addEventListener('click', () => {
+        pageFlipInstance.flipNext();
+      });
+    }
+
+    function openMenuModal() {
+      const modal = document.getElementById('menuModal');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    
+      if (!pageFlipInstance) {
+        initFlipbook();
+      } else {
+        pageFlipInstance.update();
+      }
+    }
+
+    function closeMenuModal() {
+      document.getElementById('menuModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal on outside click
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('menuModal');
+      if (e.target === modal) {
+        closeMenuModal();
+      }
+    });
+  </script>
 
 </body>
 
