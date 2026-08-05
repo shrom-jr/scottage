@@ -2412,3 +2412,19 @@ textarea.input-field {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Center align header, emblem, and main title in location card */
+.location-info-card .section-subtitle {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.location-info-card .separator,
+.location-info-card img,
+.location-info-card [data-separator] {
+  margin-inline: auto;
+}
+
+.location-info-card .headline-1 {
+  text-align: center;
+}
