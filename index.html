@@ -50,9 +50,9 @@
     - #PRELOADER
   -->
 
-  <div class="preload" data-preloader>
+  <div class="preload" data-preload data-preloader>
   <div class="circle"></div>
-  <p class="text">S BAMBOO CCOTTAGE & SEKUWA CORNER</p>
+  <p class="text">S BAMBOO COTTAGE & SEKUWA CORNER</p>
 </div>
 
 
@@ -1277,6 +1277,16 @@
     const modal = document.getElementById('menuModal');
     if (modal) modal.style.display = 'none';
   }
+</script>
+
+<script>
+  function hidePreloader() {
+    const preloader = document.querySelector('.preload');
+    if (preloader) preloader.classList.add('loaded');
+    document.body.classList.add('loaded');
+  }
+  window.addEventListener('load', hidePreloader);
+  setTimeout(hidePreloader, 2000); // Guarantees preloader hides after 2 seconds max
 </script>
 
 </body>

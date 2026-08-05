@@ -562,18 +562,27 @@ body.nav-active { overflow: hidden; }
 .preload .text {
   background-image: var(--loading-text-gradient);
   background-size: 500%;
-  font-size: calc(1.5rem + 2vw); /* Adjusted scale to fit longer text */
+  font-size: calc(1.4rem + 1.2vw);
   font-weight: var(--weight-bold);
-  line-height: 1em;
+  line-height: 1.2em;
   text-transform: uppercase;
-  letter-spacing: 8px; /* Reduced from 16px to prevent line wrapping */
-  padding-inline-start: 8px;
+  letter-spacing: 4px;
+  padding-inline: 15px;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-stroke: 0.5px var(--eerie-black-3);
   animation: loadingText linear 2s infinite;
-  white-space: nowrap; /* Forces text to stay on one line */
+  text-align: center;
+  max-width: 95vw;
+}
+
+/* Mobile screen fitting */
+@media (max-width: 575px) {
+  .preload .text {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
 }
 
 @keyframes loadingText {
