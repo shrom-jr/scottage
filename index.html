@@ -1206,7 +1206,7 @@
     </div>
   </div>
 
-  <script>
+<script>
   let pageFlipInstance = null;
 
   function openMenuModal() {
@@ -1218,15 +1218,14 @@
         const container = document.getElementById('menu-flipbook');
         if (!container) return;
 
-        // 424x600 perfectly matches the 1414x2000 image aspect ratio (0.707)
         pageFlipInstance = new St.PageFlip(container, {
-          width: 424,
-          height: 600,
+          width: 400,
+          height: 566,
           size: 'stretch',
-          minWidth: 280,
-          maxWidth: 900,
-          minHeight: 400,
-          maxHeight: 1200,
+          minWidth: 250,
+          maxWidth: 450,
+          minHeight: 350,
+          maxHeight: 636,
           maxShadowOpacity: 0.5,
           showCover: false,
           mobileScrollSupport: false
@@ -1251,7 +1250,6 @@
           nextBtn.onclick = () => {
             const currentPage = pageFlipInstance.getCurrentPageIndex();
             const totalPages = pageFlipInstance.getPageCount();
-            // Loop back to page 1 (index 0) if at or near the end
             if (currentPage >= totalPages - 2) {
               pageFlipInstance.flip(0);
             } else {
@@ -1264,7 +1262,6 @@
           prevBtn.onclick = () => {
             const currentPage = pageFlipInstance.getCurrentPageIndex();
             const totalPages = pageFlipInstance.getPageCount();
-            // Loop to the last page if at page 1
             if (currentPage === 0) {
               pageFlipInstance.flip(totalPages - 1);
             } else {
