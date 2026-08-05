@@ -562,17 +562,18 @@ body.nav-active { overflow: hidden; }
 .preload .text {
   background-image: var(--loading-text-gradient);
   background-size: 500%;
-  font-size: calc(2rem + 3vw);
+  font-size: calc(1.5rem + 2vw); /* Adjusted scale to fit longer text */
   font-weight: var(--weight-bold);
   line-height: 1em;
   text-transform: uppercase;
-  letter-spacing: 16px;
-  padding-inline-start: 16px;
+  letter-spacing: 8px; /* Reduced from 16px to prevent line wrapping */
+  padding-inline-start: 8px;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-stroke: 0.5px var(--eerie-black-3);
   animation: loadingText linear 2s infinite;
+  white-space: nowrap; /* Forces text to stay on one line */
 }
 
 @keyframes loadingText {
